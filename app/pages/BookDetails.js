@@ -25,7 +25,7 @@ export default class BookDetails extends Component {
                     </CardItem>
                     {subtitle}
                     <CardItem header>
-                        <Text note>{this.book.authors.reduce((prev, next) => prev += next)}</Text>
+                        <Text note>{this.book.authors.join(", ")}</Text>
                     </CardItem>
                     <CardItem>
                         <Text>{this.book.description}</Text>

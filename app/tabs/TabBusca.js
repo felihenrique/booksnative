@@ -12,6 +12,13 @@ export default class TabBusca extends Component {
         })
     }
 
+    renderImage(book) {
+        if(book.volumeInfo.imageLinks) {
+            return <Thumbnail square source={{ uri: book.volumeInfo.imageLinks.smallThumbnail }} />;
+        }
+        return null;
+    }
+
     render() {
         var content = null;
         if(this.state.loading) {
@@ -22,7 +29,7 @@ export default class TabBusca extends Component {
             {this.state.searchBooks.map(book =>
                 <ListItem key={book.id} thumbnail>
                     <Left>
-                        <Thumbnail square source={{ uri: book.volumeInfo.imageLinks.smallThumbnail }} />
+                        {this.renderImage(book)}
                     </Left>
                     <Body>
                         <Text>{book.volumeInfo.title}</Text>
@@ -68,7 +75,7 @@ export default class TabBusca extends Component {
         this.setState({
             loading: true
         });
-        var response = await fetch(urlApi);
+        var response = await fetch(encodeURI(urlApi));
         var books = await response.json();
         this.setState({
             searchBooks: books.items,
@@ -83,7 +90,7 @@ export default class TabBusca extends Component {
             subtitle: book.volumeInfo.subtitle,
             authors: book.volumeInfo.authors,
             description: book.volumeInfo.description,
-            thumbnail: book.volumeInfo.imageLinks.smallThumbnail
+            thumbnail: book.volumeInfo.imageLinks ? book.volumeInfo.imageLinks.smallThumbnail : null
         })
         Toast.show({
             text: 'Livro adicionado a lista de desejos'
